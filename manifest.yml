@@ -1,0 +1,14 @@
+applications:
+- name: om-notifier
+  buildpacks:
+  - https://github.com/cloudfoundry/apt-buildpack
+  - binary_buildpack
+  command: /home/vcap/app/om-notifier.sh
+  disk_quota: 128M
+  health-check-type: process
+  instances: 1
+  memory: 128M
+  no-route: true
+  stack: cflinuxfs3
+  services:
+  - credhub-om-credentials
