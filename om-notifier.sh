@@ -24,21 +24,24 @@ do
 
 	# if not equal, then there must be a new installation
 	if [ "$last_id" != "$last_run" ]  ; then
-		# get the log of the last installation
-		last_log=$(om -t "${opsman_url}"  -u "${opsman_user}" -p "${opsman_pw}" installations -f json | jq '.[0]')
-		echo $last_log
-		# send it to twilio
-		curl -s -X POST -d "Body=${last_log}" \
-	    -d "From=${from_number}" -d "To=${to_number}" \
-	    "https://api.twilio.com/2010-04-01/Accounts/${account_sid}/Messages" \
-	    -u "${account_sid}:${auth_token}"
-	    # save the id to the file.
-	    echo $last_id > last.txt
+		echo $last_id
+		# make sure it has finished
+		finished_at=$(om -t "${opsman_url}"  -u "${opsman_user}" -p "${opsman_pw}" installations -f json | jq '.[0].finished_at')
+		if [ "$finished_at" != "null" ]  ; then
+			# get the log of the last installation
+			last_log=$(om -t "${opsman_url}"  -u "${opsman_user}" -p "${opsman_pw}" installations -f json | jq '.[0]')
+			echo $last_log
+			# send it to twilio
+			curl -s -X POST -d "Body=${last_log}" \
+		    -d "From=${from_number}" -d "To=${to_number}" \
+		    "https://api.twilio.com/2010-04-01/Accounts/${account_sid}/Messages" \
+		    -u "${account_sid}:${auth_token}"
+		    # save the id to the file.
+		    echo $last_id > last.txt
+		fi
 	fi
-	echo $last_id
+	
 	# sleep for one minute
 	sleep 1m
 done
-
-
 
