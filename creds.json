@@ -1,9 +1,18 @@
 {
-"from_number":"",
-"to_number":"",
-"account_sid":"",
-"auth_token":"",
-"opsman_url":"",
-"opsman_user":"",
-"opsman_pw":""
+	"from_number":"",
+	"to_number":"",
+	"account_sid":"",
+	"auth_token":"",
+	"opsman" : [{
+		    "env":"dev",
+			"opsman_url":"",
+			"opsman_user":"",
+			"opsman_pw":""
+		}, {
+			"env":"prod",
+			"opsman_url":"",
+			"opsman_user":"",
+			"opsman_pw":""
+		}
+	]
 }
